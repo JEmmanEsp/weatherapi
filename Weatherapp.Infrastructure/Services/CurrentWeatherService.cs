@@ -24,10 +24,10 @@ namespace Weatherapp.Infrastructure.Services
             _httpClient = _httpClientFactory.CreateClient();
         }
 
-        public async Task<CurrentResponse> GetCurrent()
+        public async Task<CurrentResponse> GetCurrent(string location, string units)
         {
             var httpMessage = HttpUtils.GetRequestMessage(
-                     $"{_weatherSettings.Url}{_weatherSettings.Current}{_weatherSettings.AccessKey}query=New%20York",
+                     $"{_weatherSettings.Url}{_weatherSettings.Current}{_weatherSettings.AccessKey}query={location}&units={units}",
                      HttpMethod.Get
                  );
 

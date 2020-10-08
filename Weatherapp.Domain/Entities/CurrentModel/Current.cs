@@ -24,7 +24,7 @@ namespace Weatherapp.Domain.Entities.CurrentModel
 
         public int Pressure { get; set; }
 
-        public int Precip { get; set; }
+        public double Precip { get; set; }
 
         public int Humidity { get; set; }
 
