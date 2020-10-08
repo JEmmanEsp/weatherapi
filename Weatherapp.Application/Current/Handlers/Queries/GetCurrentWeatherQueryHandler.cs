@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Weatherapp.Domain.Entities.CurrentModel;
@@ -22,7 +19,7 @@ namespace Weatherapp.Application.Current.Handlers.Queries
 
         public async Task<Response<CurrentResponse>> Handle(GetCurrentWeatherQuery request, CancellationToken cancellationToken)
         {
-            var response = await _currentWeatherService.GetCurrent();
+            var response = await _currentWeatherService.GetCurrent(request.Location, request.Units);
 
             return Response.Ok200(response);
         }

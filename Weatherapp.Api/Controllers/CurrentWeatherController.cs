@@ -13,20 +13,20 @@ namespace Weatherapp.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CurrentController : ControllerBase
+    public class CurrentWeatherController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public CurrentController(IMediator mediator)
+        public CurrentWeatherController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
-        [HttpGet]
+        [HttpGet("{location}/{units}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<Response<GetCurrentWeatherQuery>>> Get()
+        public async Task<ActionResult<Response<GetCurrentWeatherQuery>>> Get(string location, string units)
         {
-            var result = await _mediator.Send(new GetCurrentWeatherQuery());
+            var result = await _mediator.Send(new GetCurrentWeatherQuery(location, units));
             return StatusCode(result.StatusCode, result);
         }
     }
