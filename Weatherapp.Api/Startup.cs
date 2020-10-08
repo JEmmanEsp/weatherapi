@@ -10,6 +10,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Weatherapp.Application.Current.Queries;
+using MediatR;
+using Weatherapp.Application.Infrastructure.Services;
+using Weatherapp.Infrastructure.Services;
+using Weatherapp.Infrastructure.Services.Settings;
 
 namespace Weatherapp.Api
 {
@@ -26,6 +31,13 @@ namespace Weatherapp.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.Configure<WeatherSettings>(Configuration.GetSection("WeatherService"));
+
+            services.AddHttpClient();
+            services.AddTransient<ICurrentWeatherService, CurrentWeatherService>();
+
+            services.AddMediatR(typeof(GetCurrentWeatherQuery));
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen();
