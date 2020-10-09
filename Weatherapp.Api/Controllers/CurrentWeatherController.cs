@@ -8,6 +8,7 @@ using Weatherapp.Application.Common;
 using Weatherapp.Application.Current.Queries;
 using Weatherapp.Domain.Entities.CurrentModel;
 using MediatR;
+using Weatherapp.Application.Common.ViewModels;
 
 namespace Weatherapp.Api.Controllers
 {
@@ -24,7 +25,7 @@ namespace Weatherapp.Api.Controllers
 
         [HttpGet("{location}/{units}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<Response<GetCurrentWeatherQuery>>> Get(string location, string units)
+        public async Task<ActionResult<Response<CurrentWeatherViewModel>>> Get(string location, string units)
         {
             var result = await _mediator.Send(new GetCurrentWeatherQuery(location, units));
             return StatusCode(result.StatusCode, result);

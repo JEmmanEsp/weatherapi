@@ -5,10 +5,11 @@ using Weatherapp.Domain.Entities.CurrentModel;
 using Weatherapp.Application.Common;
 using Weatherapp.Application.Current.Queries;
 using Weatherapp.Application.Infrastructure.Services;
+using Weatherapp.Application.Common.ViewModels;
 
 namespace Weatherapp.Application.Current.Handlers.Queries
 {
-    public class GetCurrentWeatherQueryHandler : IRequestHandler<GetCurrentWeatherQuery, Response<CurrentResponse>>
+    public class GetCurrentWeatherQueryHandler : IRequestHandler<GetCurrentWeatherQuery, Response<CurrentWeatherViewModel>>
     {
         private readonly ICurrentWeatherService _currentWeatherService;
 
@@ -17,11 +18,20 @@ namespace Weatherapp.Application.Current.Handlers.Queries
             _currentWeatherService = currentWeatherService;
         }
 
-        public async Task<Response<CurrentResponse>> Handle(GetCurrentWeatherQuery request, CancellationToken cancellationToken)
+        public async Task<Response<CurrentWeatherViewModel>> Handle(GetCurrentWeatherQuery request, CancellationToken cancellationToken)
         {
             var response = await _currentWeatherService.GetCurrent(request.Location, request.Units);
 
-            return Response.Ok200(response);
+            var result = new CurrentWeatherViewModel()
+            {
+                Date = response.Location.Localtime.Split(" ")[0],
+                Descriptions = response.Current.Weather_descriptions,
+                WeatherIcon = response.Current.Weather_icons,
+                Location = $"{response.Location.Name}, {response.Location.Region}, {response.Location.Country}",
+                Temperature = $"{response.Current.Temperature} {request.UnitDescription}"
+            };
+
+            return Response.Ok200(result);
         }
     }
 }
