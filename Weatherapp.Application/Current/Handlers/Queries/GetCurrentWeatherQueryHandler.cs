@@ -6,12 +6,14 @@ using Weatherapp.Application.Common;
 using Weatherapp.Application.Current.Queries;
 using Weatherapp.Application.Infrastructure.Services;
 using Weatherapp.Application.Common.ViewModels;
+using System.Collections.Generic;
 
 namespace Weatherapp.Application.Current.Handlers.Queries
 {
     public class GetCurrentWeatherQueryHandler : IRequestHandler<GetCurrentWeatherQuery, Response<CurrentWeatherViewModel>>
     {
         private readonly ICurrentWeatherService _currentWeatherService;
+        private readonly string weatherIconUrl = "https://www.weatherbit.io/static/img/icons/";
 
         public GetCurrentWeatherQueryHandler(ICurrentWeatherService currentWeatherService)
         {
@@ -22,16 +24,26 @@ namespace Weatherapp.Application.Current.Handlers.Queries
         {
             var response = await _currentWeatherService.GetCurrent(request.Location, request.Units);
 
-            if (response.Current == null || response.Location == null || response.Request == null)
+            if (response == null || response.Data.Count == 0)
                 return Response.Fail500ServiceError<CurrentWeatherViewModel>("Something went wrong. Try again later");
+
+            var forecastWeather = new List<ForecastWeatherViewModel>();
+            response.Data.ForEach(data =>
+                forecastWeather.Add(new ForecastWeatherViewModel()
+                {
+                    Date = data.datetime,
+                    Temperature = $"{data.temp} {request.UnitDescription}",
+                    WeatherDescription = data.weather.description,
+                    WeatherIcon = data.weather.icon,
+                    WeatherIconCode = data.weather.code,
+                    WeatherIconUrl = $"{weatherIconUrl}{data.weather.icon}.png"
+                })
+            );
 
             var result = new CurrentWeatherViewModel()
             {
-                Date = response.Location.Localtime.Split(" ")[0],
-                Descriptions = response.Current.Weather_descriptions,
-                WeatherIcon = response.Current.Weather_icons,
-                Location = $"{response.Location.Name}, {response.Location.Region}, {response.Location.Country}",
-                Temperature = $"{response.Current.Temperature} {request.UnitDescription}"
+                Location = $"{response.City_name}, {response.Country_code}",
+                ForecastWeather = forecastWeather
             };
 
             return Response.Ok200(result);

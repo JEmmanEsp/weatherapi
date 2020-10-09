@@ -27,7 +27,7 @@ namespace Weatherapp.Infrastructure.Services
         public async Task<CurrentResponse> GetCurrent(string location, string units)
         {
             var httpMessage = HttpUtils.GetRequestMessage(
-                     $"{_weatherSettings.Url}{_weatherSettings.Current}{_weatherSettings.AccessKey}query={location}&units={units}",
+                     $"{_weatherSettings.Url}{_weatherSettings.ForecastUrl}{_weatherSettings.AccessKey}{_weatherSettings.Days}units={units}&{_weatherSettings.City}{location}",
                      HttpMethod.Get
                  );
 
