@@ -6,10 +6,8 @@ namespace Weatherapp.Domain.Entities.CurrentModel
 {
     public class CurrentResponse
     {
-        public Request Request { get; set; }
-
-        public Location Location { get; set; }
-
-        public Current Current { get; set; }
+        public List<Data> Data { get; set; }
+        public string City_name { get; set; }
+        public string Country_code { get; set; }
     }
 }

@@ -7,8 +7,13 @@ namespace Weatherapp.Infrastructure.Services.Settings
     public class WeatherSettings
     {
         public string Url { get; set; }
+
+        public string ForecastUrl { get; set; }
+
         public string AccessKey { get; set; }
-        public string Current { get; set; }
-        public string Forecast { get; set; }
+
+        public string Days { get; set; }
+
+        public string City { get; set; }
     }
 }
