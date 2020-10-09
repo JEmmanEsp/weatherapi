@@ -22,6 +22,9 @@ namespace Weatherapp.Application.Current.Handlers.Queries
         {
             var response = await _currentWeatherService.GetCurrent(request.Location, request.Units);
 
+            if (response.Current == null || response.Location == null || response.Request == null)
+                return Response.Fail500ServiceError<CurrentWeatherViewModel>("Something went wrong. Try again later");
+
             var result = new CurrentWeatherViewModel()
             {
                 Date = response.Location.Localtime.Split(" ")[0],

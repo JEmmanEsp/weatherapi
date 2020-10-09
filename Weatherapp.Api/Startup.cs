@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using Weatherapp.Application.Current.Queries;
 using MediatR;
 using Weatherapp.Application.Infrastructure.Services;
+using Weatherapp.Application.Middlewares;
 using Weatherapp.Infrastructure.Services;
 using Weatherapp.Infrastructure.Services.Settings;
 
@@ -31,6 +32,8 @@ namespace Weatherapp.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddSingleton<ILoggin, Loggin>();
 
             services.Configure<WeatherSettings>(Configuration.GetSection("WeatherService"));
 
@@ -61,6 +64,8 @@ namespace Weatherapp.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseMiddleware<ExceptionHandlerMiddleware>();
 
             app.UseHttpsRedirection();
 

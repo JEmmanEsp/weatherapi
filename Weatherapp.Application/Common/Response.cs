@@ -22,13 +22,14 @@ namespace Weatherapp.Application.Common
 
     public class Response<T> : BasicResponse
     {
+
+        public T Data { get; set; }
+        public int StatusCode { get; set; }
+
         public Response(T data, string message, int statusCode, bool success) : base(message, success)
         {
             Data = data;
             StatusCode = statusCode;
         }
-
-        public T Data { get; set; }
-        [JsonIgnore] public int StatusCode { get; set; }
     }
 }
