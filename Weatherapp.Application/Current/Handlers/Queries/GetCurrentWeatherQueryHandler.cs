@@ -36,7 +36,10 @@ namespace Weatherapp.Application.Current.Handlers.Queries
                     WeatherDescription = data.weather.description,
                     WeatherIcon = data.weather.icon,
                     WeatherIconCode = data.weather.code,
-                    WeatherIconUrl = $"{weatherIconUrl}{data.weather.icon}.png"
+                    WeatherIconUrl = $"{weatherIconUrl}{data.weather.icon}.png",
+                    Humidity = $"{data.rh}%",
+                    Wind = $"{data.wind_spd} {request.SpeedUnits}",
+                    Precipitation = $"{data.pop}%"
                 })
             );
 
