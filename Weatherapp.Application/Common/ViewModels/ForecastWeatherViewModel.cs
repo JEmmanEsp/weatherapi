@@ -17,5 +17,11 @@ namespace Weatherapp.Application.Common.ViewModels
         public int WeatherIconCode { get; set; }
 
         public string WeatherIconUrl { get; set; }
+
+        public string Humidity { get; set; }
+
+        public string Wind { get; set; }
+
+        public string Precipitation { get; set; }
     }
 }
