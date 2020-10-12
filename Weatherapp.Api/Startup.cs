@@ -21,6 +21,8 @@ namespace Weatherapp.Api
 {
     public class Startup
     {
+        readonly string AllowedOrigin = "AllowedOrigin";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -31,6 +33,18 @@ namespace Weatherapp.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: AllowedOrigin,
+                                  builder =>
+                                  {
+                                      builder.WithOrigins()
+                                        .AllowAnyOrigin()
+                                        .AllowAnyHeader()
+                                        .AllowAnyMethod();
+                                  });
+            });
+
             services.AddControllers();
 
             services.AddSingleton<ILoggin, Loggin>();
@@ -70,6 +84,8 @@ namespace Weatherapp.Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(AllowedOrigin);
 
             app.UseAuthorization();
 

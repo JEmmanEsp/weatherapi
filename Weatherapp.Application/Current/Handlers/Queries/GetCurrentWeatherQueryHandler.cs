@@ -45,7 +45,7 @@ namespace Weatherapp.Application.Current.Handlers.Queries
 
             var result = new CurrentWeatherViewModel()
             {
-                Location = $"{response.City_name}, {response.Country_code}",
+                Location = $"{response.City_name}",
                 ForecastWeather = forecastWeather
             };
 
